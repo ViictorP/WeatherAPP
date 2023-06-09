@@ -27,16 +27,28 @@ public class mainScreenController {
     private Label cityLabel;
 
     @FXML
+    private Label currentTemperatureLabel;
+
+    @FXML
     private TextField searchTextField;
 
     @FXML
     private Button searchButton;
 
-    private JsonObject jsonObject;
+    private JsonObject local;
 
-    public void localization() {
+    private JsonObject weather;
+
+    public void searchBar() {
+        String cityName = searchTextField.getText();
+        if (cityName != null) {
+            localization(cityName);
+        }
+        searchTextField.setText("");
+    }
+    public void localization(String cityName) {
         try {
-            URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name="+ searchTextField.getText() +"&count=1&language=pt&format=json");
+            URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=pt&format=json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -54,7 +66,7 @@ public class mainScreenController {
                 String jsonResponse = response.toString();
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 JsonParser parser = new JsonParser();
-                jsonObject = parser.parse(jsonResponse).getAsJsonObject();
+                local = parser.parse(jsonResponse).getAsJsonObject();
 
                 setLabels();
             } else {
@@ -68,8 +80,8 @@ public class mainScreenController {
     }
 
     public void setLabels() {
-        if (jsonObject.has("results")) {
-            JsonObject result = jsonObject.getAsJsonArray("results").get(0).getAsJsonObject();
+        if (local.has("results")) {
+            JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
 
             countryLabel.setText(result.get("country").getAsString());
             stateLabel.setText(result.get("admin1").getAsString());
@@ -80,6 +92,46 @@ public class mainScreenController {
     }
 
     public void getWeather(double latitude, double longitude) {
+        try {
+            URL url = new URL("https://api.open-meteo.com/v1/forecast?latitude="+ latitude +"&longitude="+ longitude +"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                String jsonResponse = response.toString();
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                JsonParser parser = new JsonParser();
+                weather = parser.parse(jsonResponse).getAsJsonObject();
+
+                weatherInformationExtract();
+            } else {
+                System.out.println("HTTP request failed with response code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void weatherInformationExtract() {
+        if (weather.has("current_weather")) {
+            JsonObject currentWeatherObj = weather.get("current_weather").getAsJsonObject();
+
+            double temperature = currentWeatherObj.get("temperature").getAsDouble();
+            double windspeed = currentWeatherObj.get("windspeed").getAsDouble();
+
+            currentTemperatureLabel.setText(String.valueOf(temperature));
+        }
     }
 }
