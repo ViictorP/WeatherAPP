@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +61,8 @@ public class MainScreenController {
         searchTextField.setText("");
     }
     public void getLocalization(String cityName) {
+        cityName = cityName.replace(" ", "+");
+        System.out.println("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=en&format=json");
         try {
             URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=pt&format=json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -102,7 +102,7 @@ public class MainScreenController {
 
             nowWeather.setCountry(result.get("country").getAsString());
             nowWeather.setState(result.get("admin1").getAsString());
-            nowWeather.setCity(result.get("admin2").getAsString());
+            nowWeather.setCity(result.get("name").getAsString());
             nowWeather.setLatitude(result.get("latitude").getAsDouble());
             nowWeather.setLongitude(result.get("longitude").getAsDouble());
 
