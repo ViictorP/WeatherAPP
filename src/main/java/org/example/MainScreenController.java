@@ -13,6 +13,7 @@ import org.currentWeather.Weather;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -56,15 +57,13 @@ public class MainScreenController {
     public void searchBar() {
         String cityName = searchTextField.getText();
         if (cityName != null) {
-            getLocalization(cityName);
+            getLocalization(prepareCityName(cityName));
         }
         searchTextField.setText("");
     }
     public void getLocalization(String cityName) {
-        cityName = cityName.replace(" ", "+");
-        System.out.println("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=en&format=json");
         try {
-            URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=pt&format=json");
+            URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=en&format=json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -160,7 +159,12 @@ public class MainScreenController {
     }
 
     public void updateLabels() {
-        cityLabel.setText(nowWeather.getCity());
+        try {
+            cityLabel.textProperty().set(new String(nowWeather.getCity().getBytes(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
         stateLabel.setText(nowWeather.getState());
         countryLabel.setText(nowWeather.getCountry());
 
@@ -237,5 +241,19 @@ public class MainScreenController {
             default:
                 return "";
         }
+    }
+
+    public String prepareCityName(String cityName) {
+        cityName = cityName.replace(" ", "+");
+        cityName = cityName.replace("ã", "a");
+        cityName = cityName.replace("õ", "o");
+        cityName = cityName.replace("â", "a");
+        cityName = cityName.replace("ô", "o");
+        cityName = cityName.replace("í", "i");
+        cityName = cityName.replace("ó", "o");
+        cityName = cityName.replace("é", "e");
+        cityName = cityName.replace("ç", "c");
+
+        return cityName;
     }
 }
