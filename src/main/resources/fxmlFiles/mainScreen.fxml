@@ -8,18 +8,20 @@
 
 <AnchorPane prefHeight="455.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainScreenController">
    <children>
-      <TextField fx:id="searchTextField" layoutX="56.0" layoutY="183.0" />
-      <Button fx:id="searchButton" layoutX="223.0" layoutY="183.0" mnemonicParsing="false" onAction="#searchBar" text="Search" />
-      <Label fx:id="countryLabel" layoutX="234.0" layoutY="424.0" prefHeight="17.0" prefWidth="52.0" />
-      <Label fx:id="stateLabel" layoutX="163.0" layoutY="424.0" prefHeight="17.0" prefWidth="52.0" />
+      <TextField fx:id="searchTextField" layoutX="57.0" layoutY="238.0" />
+      <Button fx:id="searchButton" layoutX="225.0" layoutY="238.0" mnemonicParsing="false" onAction="#searchBar" text="Search" />
+      <Label fx:id="countryLabel" layoutX="195.0" layoutY="424.0" prefHeight="17.0" prefWidth="91.0" />
+      <Label fx:id="stateLabel" layoutX="74.0" layoutY="424.0" prefHeight="17.0" prefWidth="91.0" />
       <Label fx:id="cityLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="99.0" layoutY="19.0" prefHeight="17.0" prefWidth="102.0" />
       <Label fx:id="currentTemperatureLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="105.0" layoutY="96.0" prefHeight="62.0" prefWidth="91.0">
          <font>
             <Font size="41.0" />
          </font></Label>
-      <Label fx:id="windSpeedLabel" layoutX="131.0" layoutY="158.0" prefHeight="17.0" prefWidth="25.0" />
       <Label fx:id="yearLabel" layoutX="22.0" layoutY="36.0" />
       <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="45.0" prefHeight="17.0" prefWidth="201.0" textAlignment="CENTER" />
       <Label fx:id="clockLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="11.0" prefHeight="17.0" prefWidth="44.0" />
+      <Label fx:id="preciptationLabel" layoutX="74.0" layoutY="194.0" prefHeight="17.0" prefWidth="25.0" />
+      <Label fx:id="windSpeedLabel" layoutX="199.0" layoutY="194.0" prefHeight="17.0" prefWidth="52.0" />
+      <Label fx:id="humidityLabel" layoutX="136.0" layoutY="194.0" prefHeight="17.0" prefWidth="25.0" />
    </children>
 </AnchorPane>

@@ -1,9 +1,6 @@
 package org.example;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainScreenController {
@@ -40,7 +38,13 @@ public class MainScreenController {
     private Label windSpeedLabel;
 
     @FXML
+    private Label preciptationLabel;
+
+    @FXML
     private Label timeLabel;
+
+    @FXML
+    private Label humidityLabel;
 
     @FXML
     private TextField searchTextField;
@@ -53,6 +57,16 @@ public class MainScreenController {
     private JsonObject weather;
 
     private Weather nowWeather = new Weather();
+
+    private ArrayList<String> hourlyTime = new ArrayList<String>();
+
+    private ArrayList<Double> hourlyTemperature = new ArrayList<Double>();
+
+    private ArrayList<Integer> hourlyHumidity = new ArrayList<Integer>();
+
+    private ArrayList<Double> hourlyApparentTemperature = new ArrayList<Double>();
+
+    private ArrayList<Integer> hourlyPrecipitation = new ArrayList<Integer>();
 
     public void searchBar() {
         String cityName = searchTextField.getText();
@@ -83,7 +97,7 @@ public class MainScreenController {
                 JsonParser parser = new JsonParser();
                 local = parser.parse(jsonResponse).getAsJsonObject();
 
-                localizationInformationExtract();
+                getCords();
 
             } else {
                 System.out.println("HTTP request failed with response code: " + responseCode);
@@ -95,13 +109,10 @@ public class MainScreenController {
         }
     }
 
-    public void localizationInformationExtract() {
+    public void getCords() {
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
 
-            nowWeather.setCountry(result.get("country").getAsString());
-            nowWeather.setState(result.get("admin1").getAsString());
-            nowWeather.setCity(result.get("name").getAsString());
             nowWeather.setLatitude(result.get("latitude").getAsDouble());
             nowWeather.setLongitude(result.get("longitude").getAsDouble());
 
@@ -131,7 +142,7 @@ public class MainScreenController {
                 JsonParser parser = new JsonParser();
                 weather = parser.parse(jsonResponse).getAsJsonObject();
 
-                weatherInformationExtract();
+                extractData();
             } else {
                 System.out.println("HTTP request failed with response code: " + responseCode);
             }
@@ -142,34 +153,50 @@ public class MainScreenController {
         }
     }
 
-    public void weatherInformationExtract() {
+    public void extractData() {
+        // Extraindo informações relacionadas a localização do alvo.
+        if (local.has("results")) {
+            JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
+
+            nowWeather.setCity(result.get("name").getAsString());
+            nowWeather.setCountry(result.get("country").getAsString());
+            nowWeather.setState(result.get("admin1").getAsString());
+
+        }
+
+        // Extraindo informações relacionadas ao clima do alvo.
         if (weather.has("current_weather")) {
             JsonObject currentWeatherObj = weather.get("current_weather").getAsJsonObject();
 
             nowWeather.setTemperature(currentWeatherObj.get("temperature").getAsDouble());
             nowWeather.setWindSpeed(currentWeatherObj.get("windspeed").getAsDouble());
-            // nowWeather.setDay nowWeather.setmonth nowWeather.setyear
             nowWeather.setIs_day(currentWeatherObj.get("is_day").getAsInt());
             nowWeather.setWeatherCode(currentWeatherObj.get("weathercode").getAsInt());
+            nowWeather.setCompleteTime(currentWeatherObj.get("time").getAsString());
 
             extractTime(currentWeatherObj.get("time").getAsString());
             dayOfTheWeek(currentWeatherObj.get("time").getAsString());
+
+            hourlyExtract();
             updateLabels();
         }
     }
 
     public void updateLabels() {
+        // Essa parte configura algumas labels para UTF-8, para evitar problemas no uso de acentos.
         try {
             cityLabel.textProperty().set(new String(nowWeather.getCity().getBytes(), "UTF-8"));
+            stateLabel.textProperty().set(new String(nowWeather.getState().getBytes(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
 
-        stateLabel.setText(nowWeather.getState());
-        countryLabel.setText(nowWeather.getCountry());
+        currentTemperatureLabel.setText(String.valueOf((int) Math.round(nowWeather.getTemperature())) + "°");
+        preciptationLabel.setText(String.valueOf(hourlyPrecipitation.get(hourlyTime.indexOf(nowWeather.getCompleteTime()))) + "%");
+        humidityLabel.setText(String.valueOf(hourlyHumidity.get(hourlyTime.indexOf(nowWeather.getCompleteTime()))) + "%");
+        windSpeedLabel.setText(String.valueOf((int) Math.round(nowWeather.getWindSpeed())) + " km/h");
 
-        int temperaturaArredondada = (int) Math.round(nowWeather.getTemperature());
-        currentTemperatureLabel.setText(String.valueOf(temperaturaArredondada) + "°");
+        countryLabel.setText(nowWeather.getCountry());
 
         timeLabel.setText(nowWeather.getWeekDay() + ", " + nowWeather.getDay()
                 + " " + monthByNumber(nowWeather.getMonth()) + " " + nowWeather.getTime());
@@ -256,4 +283,34 @@ public class MainScreenController {
 
         return cityName;
     }
+
+    public void hourlyExtract() {
+        if (weather.has("hourly")) {
+            JsonObject currentWeatherObj = weather.get("hourly").getAsJsonObject();
+
+            JsonArray time = currentWeatherObj.getAsJsonArray("time");
+            JsonArray temperature = currentWeatherObj.getAsJsonArray("temperature_2m");
+            JsonArray humidity = currentWeatherObj.getAsJsonArray("relativehumidity_2m");
+            JsonArray ApparentTemperature = currentWeatherObj.getAsJsonArray("apparent_temperature");
+            JsonArray precipitation = currentWeatherObj.getAsJsonArray("precipitation_probability");
+
+            for (int i = 0; i < time.size(); i++) {
+                String time_ = time.get(i).getAsString();
+                hourlyTime.add(time_);
+
+                double temperature_ = temperature.get(i).getAsDouble();
+                hourlyTemperature.add(temperature_);
+
+                int humidity_ = humidity.get(i).getAsInt();
+                hourlyHumidity.add(humidity_);
+
+                double ApparentTemperature_ = ApparentTemperature.get(i).getAsDouble();
+                hourlyApparentTemperature.add(ApparentTemperature_);
+
+                int precipitation_ = precipitation.get(i).getAsInt();
+                hourlyPrecipitation.add(precipitation_);
+            }
+        }
+    }
+
 }

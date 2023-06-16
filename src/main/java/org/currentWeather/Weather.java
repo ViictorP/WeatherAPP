@@ -1,5 +1,7 @@
 package org.currentWeather;
 
+import java.util.ArrayList;
+
 public class Weather {
     private String city;
 
@@ -14,6 +16,8 @@ public class Weather {
     private String month;
 
     private String year;
+
+    private String completeTime;
 
     private String weekDay;
 
@@ -30,6 +34,14 @@ public class Weather {
     private double latitude;
 
     private double longitude;
+
+    public String getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(String completeTime) {
+        this.completeTime = completeTime;
+    }
 
     public String getWeekDay() {
         return weekDay;
