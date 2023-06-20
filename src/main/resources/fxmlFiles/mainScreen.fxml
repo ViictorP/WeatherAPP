@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="530.0" prefWidth="298.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainScreenController">
    <children>
       <TextField fx:id="searchTextField" layoutX="49.0" layoutY="238.0" />
-      <Button fx:id="searchButton" layoutX="220.0" layoutY="238.0" mnemonicParsing="false" onAction="#searchBar" text="Search" />
+      <Button fx:id="start" layoutX="220.0" layoutY="238.0" mnemonicParsing="false" onAction="#searchBar" text="Search" />
       <Label fx:id="countryLabel" layoutX="195.0" layoutY="424.0" prefHeight="17.0" prefWidth="91.0" />
       <Label fx:id="stateLabel" layoutX="74.0" layoutY="424.0" prefHeight="17.0" prefWidth="91.0" />
       <Label fx:id="cityLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="99.0" layoutY="19.0" prefHeight="17.0" prefWidth="102.0" />
@@ -29,7 +29,7 @@
          <content>
             <HBox prefHeight="108.0" prefWidth="662.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
+                  <Button fx:id="dayOneButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
                   <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
                   <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
                   <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />

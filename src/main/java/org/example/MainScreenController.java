@@ -2,9 +2,13 @@ package org.example;
 
 import com.google.gson.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import org.currentWeather.Weather;
 
 import java.io.BufferedReader;
@@ -52,11 +56,14 @@ public class MainScreenController {
     @FXML
     private Button searchButton;
 
+    @FXML
+    private Button dayOneButton;
+
     private JsonObject local;
 
     private JsonObject weather;
 
-    private Weather nowWeather = new Weather();
+    private Weather[] forecast = {new Weather(), new Weather(), new Weather(), new Weather(), new Weather(), new Weather(), new Weather()};
 
     private ArrayList<String> hourlyTime = new ArrayList<String>();
 
@@ -74,7 +81,15 @@ public class MainScreenController {
             getLocalization(prepareCityName(cityName));
         }
         searchTextField.setText("");
+
+        teste();
     }
+
+    public void start() {
+
+        searchBar();
+    }
+
     public void getLocalization(String cityName) {
         try {
             URL url = new URL("https://geocoding-api.open-meteo.com/v1/search?name=" + cityName + "&count=1&language=en&format=json");
@@ -113,10 +128,10 @@ public class MainScreenController {
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
 
-            nowWeather.setLatitude(result.get("latitude").getAsDouble());
-            nowWeather.setLongitude(result.get("longitude").getAsDouble());
+            forecast[0].setLatitude(result.get("latitude").getAsDouble());
+            forecast[0].setLongitude(result.get("longitude").getAsDouble());
 
-            getWeather(nowWeather.getLatitude(), nowWeather.getLongitude());
+            getWeather(forecast[0].getLatitude(), forecast[0].getLongitude());
         }
     }
 
@@ -158,9 +173,9 @@ public class MainScreenController {
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
 
-            nowWeather.setCity(result.get("name").getAsString());
-            nowWeather.setCountry(result.get("country").getAsString());
-            nowWeather.setState(result.get("admin1").getAsString());
+            forecast[0].setCity(result.get("name").getAsString());
+            forecast[0].setCountry(result.get("country").getAsString());
+            forecast[0].setState(result.get("admin1").getAsString());
 
         }
 
@@ -168,11 +183,11 @@ public class MainScreenController {
         if (weather.has("current_weather")) {
             JsonObject currentWeatherObj = weather.get("current_weather").getAsJsonObject();
 
-            nowWeather.setTemperature(currentWeatherObj.get("temperature").getAsDouble());
-            nowWeather.setWindSpeed(currentWeatherObj.get("windspeed").getAsDouble());
-            nowWeather.setIs_day(currentWeatherObj.get("is_day").getAsInt());
-            nowWeather.setWeatherCode(currentWeatherObj.get("weathercode").getAsInt());
-            nowWeather.setCompleteTime(currentWeatherObj.get("time").getAsString());
+            forecast[0].setTemperature(currentWeatherObj.get("temperature").getAsDouble());
+            forecast[0].setWindSpeed(currentWeatherObj.get("windspeed").getAsDouble());
+            forecast[0].setIs_day(currentWeatherObj.get("is_day").getAsInt());
+            forecast[0].setWeatherCode(currentWeatherObj.get("weathercode").getAsInt());
+            forecast[0].setCompleteTime(currentWeatherObj.get("time").getAsString());
 
             extractTime(currentWeatherObj.get("time").getAsString());
             dayOfTheWeek(currentWeatherObj.get("time").getAsString());
@@ -185,21 +200,21 @@ public class MainScreenController {
     public void updateLabels() {
         // Essa parte configura algumas labels para UTF-8, para evitar problemas no uso de acentos.
         try {
-            cityLabel.textProperty().set(new String(nowWeather.getCity().getBytes(), "UTF-8"));
-            stateLabel.textProperty().set(new String(nowWeather.getState().getBytes(), "UTF-8"));
+            cityLabel.textProperty().set(new String(forecast[0].getCity().getBytes(), "UTF-8"));
+            stateLabel.textProperty().set(new String(forecast[0].getState().getBytes(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
 
-        currentTemperatureLabel.setText(String.valueOf((int) Math.round(nowWeather.getTemperature())) + "°");
-        preciptationLabel.setText(String.valueOf(hourlyPrecipitation.get(hourlyTime.indexOf(nowWeather.getCompleteTime()))) + "%");
-        humidityLabel.setText(String.valueOf(hourlyHumidity.get(hourlyTime.indexOf(nowWeather.getCompleteTime()))) + "%");
-        windSpeedLabel.setText(String.valueOf((int) Math.round(nowWeather.getWindSpeed())) + " km/h");
+        currentTemperatureLabel.setText(String.valueOf((int) Math.round(forecast[0].getTemperature())) + "°");
+        preciptationLabel.setText(String.valueOf(hourlyPrecipitation.get(hourlyTime.indexOf(forecast[0].getCompleteTime()))) + "%");
+        humidityLabel.setText(String.valueOf(hourlyHumidity.get(hourlyTime.indexOf(forecast[0].getCompleteTime()))) + "%");
+        windSpeedLabel.setText(String.valueOf((int) Math.round(forecast[0].getWindSpeed())) + " km/h");
 
-        countryLabel.setText(nowWeather.getCountry());
+        countryLabel.setText(forecast[0].getCountry());
 
-        timeLabel.setText(nowWeather.getWeekDay() + ", " + nowWeather.getDay()
-                + " " + monthByNumber(nowWeather.getMonth()) + " " + nowWeather.getTime());
+        timeLabel.setText(forecast[0].getWeekDay() + ", " + forecast[0].getDay()
+                + " " + monthByNumber(forecast[0].getMonth()) + " " + forecast[0].getTime());
     }
 
     public void extractTime(String time) {
@@ -207,23 +222,23 @@ public class MainScreenController {
         LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME);
 
 
-        nowWeather.setDay(String.valueOf(dateTime.getDayOfMonth()));
-        nowWeather.setMonth(String.valueOf(dateTime.getMonthValue()));
-        nowWeather.setYear(String.valueOf(dateTime.getYear()));
+        forecast[0].setDay(String.valueOf(dateTime.getDayOfMonth()));
+        forecast[0].setMonth(String.valueOf(dateTime.getMonthValue()));
+        forecast[0].setYear(String.valueOf(dateTime.getYear()));
 
         LocalTime now = LocalTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
 
         if (hour < 10) {
-            nowWeather.setTime("0"+hour + ":" + minute);
+            forecast[0].setTime("0"+hour + ":" + minute);
         }else {
-            nowWeather.setTime(hour + ":" + minute);
+            forecast[0].setTime(hour + ":" + minute);
         }
         if (minute < 10) {
-            nowWeather.setTime(hour + ":0" + minute);
+            forecast[0].setTime(hour + ":0" + minute);
         }else {
-            nowWeather.setTime(hour + ":" + minute);
+            forecast[0].setTime(hour + ":" + minute);
         }
     }
 
@@ -236,7 +251,7 @@ public class MainScreenController {
         // Obter o dia da semana no estilo abreviado (por exemplo, "sáb")
         String diaDaSemanaAbreviado = dateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
 
-        nowWeather.setWeekDay(diaDaSemanaCompleto);
+        forecast[0].setWeekDay(diaDaSemanaCompleto);
     }
 
     public String monthByNumber(String month) {
@@ -313,4 +328,38 @@ public class MainScreenController {
         }
     }
 
+    public void forecastData() {
+        if (weather.has("daily")) {
+            JsonObject currentWeatherObj = weather.get("daily").getAsJsonObject();
+
+            JsonArray time = currentWeatherObj.getAsJsonArray("time");
+            JsonArray weatherCode = currentWeatherObj.getAsJsonArray("weathercode");
+            JsonArray maxTemperature = currentWeatherObj.getAsJsonArray("temperature_2m_max");
+            JsonArray minTemperature = currentWeatherObj.getAsJsonArray("temperature_2m_min");
+
+            for (int i = 0; i < time.size(); i++) {
+                String time_ = time.get(i).getAsString();
+                forecast[i].setCompleteTime(time_);
+
+                int weatherCode_ = weatherCode.get(i).getAsInt();
+                forecast[i].setWeatherCode(weatherCode_);
+
+                double maxTemperature_ = maxTemperature.get(i).getAsDouble();
+                forecast[i].setMaxTemperature(maxTemperature_);
+
+                double minTemperature_ = minTemperature.get(i).getAsDouble();
+                forecast[i].setMaxTemperature(maxTemperature_);
+            }
+        }
+    }
+
+    public void teste() {
+        Image image = new Image("/iconFiles/rain.png");
+
+        VBox vBox = new VBox(5);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(new ImageView(image), new Label("32°C\n40°C"));
+
+        dayOneButton.setGraphic(vBox);
+    }
 }

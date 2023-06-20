@@ -1,7 +1,5 @@
 package org.currentWeather;
 
-import java.util.ArrayList;
-
 public class Weather {
     private String city;
 
@@ -34,6 +32,26 @@ public class Weather {
     private double latitude;
 
     private double longitude;
+
+    private double maxTemperature;
+
+    private double mimTemperature;
+
+    public double getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public void setMaxTemperature(double maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public double getMimTemperature() {
+        return mimTemperature;
+    }
+
+    public void setMimTemperature(double mimTemperature) {
+        this.mimTemperature = mimTemperature;
+    }
 
     public String getCompleteTime() {
         return completeTime;
