@@ -30,12 +30,12 @@
             <HBox prefHeight="108.0" prefWidth="662.0">
                <children>
                   <Button fx:id="dayOneButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" text="Button" />
+                  <Button fx:id="dayTwoButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="dayThreeButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="dayFourButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="dayFiveButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="daySixButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="daySevenButton" mnemonicParsing="false" prefHeight="113.0" prefWidth="86.0" />
                </children>
             </HBox>
          </content>

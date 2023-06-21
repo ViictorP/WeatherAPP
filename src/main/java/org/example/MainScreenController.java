@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -59,6 +60,24 @@ public class MainScreenController {
     @FXML
     private Button dayOneButton;
 
+    @FXML
+    private Button dayTwoButton;
+
+    @FXML
+    private Button dayThreeButton;
+
+    @FXML
+    private Button dayFourButton;
+
+    @FXML
+    private Button dayFiveButton;
+
+    @FXML
+    private Button daySixButton;
+
+    @FXML
+    private Button daySevenButton;
+
     private JsonObject local;
 
     private JsonObject weather;
@@ -82,7 +101,7 @@ public class MainScreenController {
         }
         searchTextField.setText("");
 
-        teste();
+
     }
 
     public void start() {
@@ -188,9 +207,10 @@ public class MainScreenController {
             forecast[0].setIs_day(currentWeatherObj.get("is_day").getAsInt());
             forecast[0].setWeatherCode(currentWeatherObj.get("weathercode").getAsInt());
             forecast[0].setCompleteTime(currentWeatherObj.get("time").getAsString());
+            forecast[0].setWeekDay(dayOfTheWeek(currentWeatherObj.get("time").getAsString(), false, true));
 
             extractTime(currentWeatherObj.get("time").getAsString());
-            dayOfTheWeek(currentWeatherObj.get("time").getAsString());
+
 
             hourlyExtract();
             updateLabels();
@@ -215,6 +235,7 @@ public class MainScreenController {
 
         timeLabel.setText(forecast[0].getWeekDay() + ", " + forecast[0].getDay()
                 + " " + monthByNumber(forecast[0].getMonth()) + " " + forecast[0].getTime());
+        teste();
     }
 
     public void extractTime(String time) {
@@ -242,16 +263,28 @@ public class MainScreenController {
         }
     }
 
-    public void dayOfTheWeek(String time) {
-        LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    public String dayOfTheWeek(String time, boolean abbreviated, boolean DateTimeFormat) {
+        if (DateTimeFormat) {
+            LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            if (abbreviated) {
+                String diaDaSemanaAbreviado = dateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
+                return diaDaSemanaAbreviado;
 
-        // Obter o dia da semana no estilo completo (por exemplo, "sábado")
-        String diaDaSemanaCompleto = dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+            } else {
+                String diaDaSemanaCompleto = dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+                return diaDaSemanaCompleto;
+            }
+        } else {
+            LocalDate dateTime = LocalDate.parse(time);
+            if (abbreviated) {
+                String diaDaSemanaAbreviado = dateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
+                return diaDaSemanaAbreviado;
 
-        // Obter o dia da semana no estilo abreviado (por exemplo, "sáb")
-        String diaDaSemanaAbreviado = dateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
-
-        forecast[0].setWeekDay(diaDaSemanaCompleto);
+            } else {
+                String diaDaSemanaCompleto = dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+                return diaDaSemanaCompleto;
+            }
+        }
     }
 
     public String monthByNumber(String month) {
@@ -301,6 +334,7 @@ public class MainScreenController {
 
     public void hourlyExtract() {
         if (weather.has("hourly")) {
+            clearArrays();
             JsonObject currentWeatherObj = weather.get("hourly").getAsJsonObject();
 
             JsonArray time = currentWeatherObj.getAsJsonArray("time");
@@ -340,6 +374,7 @@ public class MainScreenController {
             for (int i = 0; i < time.size(); i++) {
                 String time_ = time.get(i).getAsString();
                 forecast[i].setCompleteTime(time_);
+                forecast[i].setAbbreviatedWeekDay(dayOfTheWeek(forecast[i].getCompleteTime(), true, false));
 
                 int weatherCode_ = weatherCode.get(i).getAsInt();
                 forecast[i].setWeatherCode(weatherCode_);
@@ -348,18 +383,52 @@ public class MainScreenController {
                 forecast[i].setMaxTemperature(maxTemperature_);
 
                 double minTemperature_ = minTemperature.get(i).getAsDouble();
-                forecast[i].setMaxTemperature(maxTemperature_);
+                forecast[i].setMimTemperature(minTemperature_);
+            }
+        }
+        System.out.println(forecast);
+    }
+
+    public void teste() {
+        forecastData();
+        for (int i = 0; i < 7; i++) {
+            Image image = new Image("/iconFiles/rain.png");
+
+            VBox vBox = new VBox(5);
+            vBox.setAlignment(Pos.CENTER);
+            vBox.getChildren().addAll(new Label(forecast[i].getAbbreviatedWeekDay()) ,new ImageView(image), new Label(forecast[i].getMaxTemperature()+"°C\n" + forecast[i].getMimTemperature() + "°C"));
+
+            switch (i) {
+                case 0:
+                    dayOneButton.setGraphic(vBox);
+                    break;
+                case 1:
+                    dayTwoButton.setGraphic(vBox);
+                    break;
+                case 2:
+                    dayThreeButton.setGraphic(vBox);
+                    break;
+                case 3:
+                    dayFourButton.setGraphic(vBox);
+                    break;
+                case 4:
+                    dayFiveButton.setGraphic(vBox);
+                    break;
+                case 5:
+                    daySixButton.setGraphic(vBox);
+                    break;
+                case 6:
+                    daySevenButton.setGraphic(vBox);
+                    break;
             }
         }
     }
 
-    public void teste() {
-        Image image = new Image("/iconFiles/rain.png");
-
-        VBox vBox = new VBox(5);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(new ImageView(image), new Label("32°C\n40°C"));
-
-        dayOneButton.setGraphic(vBox);
+    public void clearArrays() {
+        hourlyTime.clear();
+        hourlyTemperature.clear();
+        hourlyHumidity.clear();
+        hourlyApparentTemperature.clear();
+        hourlyPrecipitation.clear();
     }
 }

@@ -19,6 +19,8 @@ public class Weather {
 
     private String weekDay;
 
+    private String abbreviatedWeekDay;
+
     private int is_day;
 
     private int weatherCode;
@@ -36,6 +38,14 @@ public class Weather {
     private double maxTemperature;
 
     private double mimTemperature;
+
+    public String getAbbreviatedWeekDay() {
+        return abbreviatedWeekDay;
+    }
+
+    public void setAbbreviatedWeekDay(String abbreviatedWeekDay) {
+        this.abbreviatedWeekDay = abbreviatedWeekDay;
+    }
 
     public double getMaxTemperature() {
         return maxTemperature;
