@@ -235,7 +235,7 @@ public class MainScreenController {
 
         timeLabel.setText(forecast[0].getWeekDay() + ", " + forecast[0].getDay()
                 + " " + monthByNumber(forecast[0].getMonth()) + " " + forecast[0].getTime());
-        teste();
+        sevenDaysForecast();
     }
 
     public void extractTime(String time) {
@@ -386,18 +386,18 @@ public class MainScreenController {
                 forecast[i].setMimTemperature(minTemperature_);
             }
         }
-        System.out.println(forecast);
     }
 
-    public void teste() {
+    public void sevenDaysForecast() {
         forecastData();
         for (int i = 0; i < 7; i++) {
-            Image image = new Image("/iconFiles/rain.png");
+
+            Image image = new Image(weatherCodeIcon(forecast[i].getWeatherCode()));
 
             VBox vBox = new VBox(5);
             vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(new Label(forecast[i].getAbbreviatedWeekDay()) ,new ImageView(image), new Label(forecast[i].getMaxTemperature()+"°C\n" + forecast[i].getMimTemperature() + "°C"));
-
+            vBox.getChildren().addAll(new Label(forecast[i].getAbbreviatedWeekDay()) ,new ImageView(image),
+                    new Label((int) Math.round(forecast[i].getMaxTemperature()) + "°C\n" + (int) Math.round(forecast[i].getMimTemperature()) + "°C"));
             switch (i) {
                 case 0:
                     dayOneButton.setGraphic(vBox);
@@ -424,6 +424,9 @@ public class MainScreenController {
         }
     }
 
+    public String weatherCodeIcon(int weatherCode) {
+        return "/iconFiles/rain.png";
+    }
     public void clearArrays() {
         hourlyTime.clear();
         hourlyTemperature.clear();
