@@ -392,7 +392,7 @@ public class MainScreenController {
         forecastData();
         for (int i = 0; i < 7; i++) {
 
-            Image image = new Image(weatherCodeIcon(forecast[i].getWeatherCode()));
+            Image image = new Image(weatherCodeIcon(forecast[i].getWeatherCode(), 1));
 
             VBox vBox = new VBox(5);
             vBox.setAlignment(Pos.CENTER);
@@ -424,8 +424,88 @@ public class MainScreenController {
         }
     }
 
-    public String weatherCodeIcon(int weatherCode) {
-        return "/iconFiles/rain.png";
+    public String weatherCodeIcon(int weatherCode, int is_day) {
+        if (weatherCode == 0) {
+            if (is_day == 1) {
+                return "/iconFiles/ClearSky_0.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/ClearSkyNight_0.png";
+            }
+        } else if (weatherCode == 51 || weatherCode == 53 || weatherCode == 55) {
+            if (is_day == 1) {
+                return "/iconFiles/Drizzle_51_53_55.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/DrizzleNight_51_53_55.png";
+            }
+        } else if (weatherCode == 45 || weatherCode == 48) {
+            if (is_day == 1) {
+                return "/iconFiles/Fog_45_48.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/FogNight_45_48.png";
+            }
+        } else if (weatherCode == 66 || weatherCode == 67) {
+            if (is_day == 1) {
+                return "/iconFiles/FreezingRain_66_67.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/FreezingRainNight_66_67.png";
+            }
+        } else if (weatherCode == 3) {
+            if (is_day == 1) {
+                return "/iconFiles/Overcast_3.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/OvercastNight_3.png";
+            }
+        } else if (weatherCode == 1 || weatherCode == 2) {
+            if (is_day == 1) {
+                return "/iconFiles/PartlyCloudy_1_2.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/PartlyCloudyNight_1_2.png";
+            }
+        } else if (weatherCode == 61 || weatherCode == 63 || weatherCode == 65) {
+            if (is_day == 1) {
+                return "/iconFiles/Rain_61_63_65.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/RainNight_61_63_65.png";
+            }
+        } else if (weatherCode == 80 || weatherCode == 81 || weatherCode == 82) {
+            if (is_day == 1) {
+                return "/iconFiles/RainShowers_80_81_82.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/RainShowersNight_80_81_82.png";
+            }
+        } else if (weatherCode == 71 || weatherCode == 73 || weatherCode == 75) {
+            if (is_day == 1) {
+                return "/iconFiles/Snow_71_73_75.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/SnowNight_71_73_75.png";
+            }
+        } else if (weatherCode == 77) {
+            if (is_day == 1) {
+                return "/iconFiles/SnowGrains_77.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/SnowGrainsNight_77.png";
+            }
+        } else if (weatherCode == 85 || weatherCode == 86) {
+            if (is_day == 1) {
+                return "/iconFiles/SnowShowers_85_86.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/SnowShowersNight_85_86.png";
+            }
+        } else if (weatherCode == 95) {
+            if (is_day == 1) {
+                return "/iconFiles/Thunderstorm_95.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/ThunderstormNight_95.png";
+            }
+        } else if (weatherCode == 96 || weatherCode == 99) {
+            if (is_day == 1) {
+                return "/iconFiles/ThunderstormRain_96_99.png";
+            } else if (is_day == 0) {
+                return "/iconFiles/ThunderstormRainNight_96_99.png";
+            }
+        }
+
+        return null;
     }
     public void clearArrays() {
         hourlyTime.clear();
