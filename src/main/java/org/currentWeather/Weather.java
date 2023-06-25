@@ -17,6 +17,8 @@ public class Weather {
 
     private String completeTime;
 
+    private String Date;
+
     private String weekDay;
 
     private String abbreviatedWeekDay;
@@ -24,6 +26,8 @@ public class Weather {
     private int is_day;
 
     private int weatherCode;
+
+    private int forecastWeatherCode;
 
     private int precipitation;
 
@@ -38,6 +42,22 @@ public class Weather {
     private double maxTemperature;
 
     private double mimTemperature;
+
+    public int getForecastWeatherCode() {
+        return forecastWeatherCode;
+    }
+
+    public void setForecastWeatherCode(int forecastWeatherCode) {
+        this.forecastWeatherCode = forecastWeatherCode;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
 
     public String getAbbreviatedWeekDay() {
         return abbreviatedWeekDay;
