@@ -4,12 +4,16 @@ import com.google.gson.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.currentWeather.Weather;
 
@@ -89,11 +93,12 @@ public class MainScreenController {
     @FXML
     private ScrollPane pane;
 
+    @FXML
+    private LineChart<String, Number> temperatureChart;
+
     private JsonObject local;
 
     private JsonObject weather;
-
-    private int index = 0;
 
     private Weather[] forecast = {new Weather(), new Weather(), new Weather(), new Weather(), new Weather(), new Weather(), new Weather()};
 
@@ -115,12 +120,9 @@ public class MainScreenController {
             getLocalization(prepareCityName(cityName));
         }
         searchTextField.setText("");
-
-
     }
 
     public void start() {
-
         searchBar();
     }
 
@@ -254,6 +256,7 @@ public class MainScreenController {
                 + " " + monthByNumber(forecast[0].getMonth()) + " " + forecast[0].getTime());
         iconImageView.setImage(weatherCodeIcon(forecast[0].getWeatherCode(), forecast[0].getIs_day()));
 
+        chartManager(0, 24);
         sevenDaysForecast();
     }
 
@@ -574,16 +577,22 @@ public class MainScreenController {
 
         if (day == 1) {
             maxHourlyData(24, 48);
+            chartManager(24, 48);
         } else if (day == 2) {
             maxHourlyData(48, 72);
+            chartManager(48, 72);
         } else if (day == 3) {
             maxHourlyData(72, 96);
+            chartManager(72, 96);
         } else if (day == 4) {
             maxHourlyData(96, 120);
+            chartManager(96, 120);
         } else if (day == 5) {
             maxHourlyData(120, 144);
+            chartManager(120, 144);
         } else if (day == 6) {
             maxHourlyData(144, 168);
+            chartManager(144, 168);
         }
     }
 
@@ -612,5 +621,23 @@ public class MainScreenController {
         apparentTemperatureLabel.setText(Math.round(apparentTemperature) + "°");
         preciptationLabel.setText(precipitation + "%");
         windSpeedLabel.setText(Math.round(windSpeed) + " km/h");
+    }
+
+    public void chartManager(int start, int end) {
+
+        ArrayList<Double> temperatures = new ArrayList<Double>();
+
+        for (int o = start; o < end; o++) {
+            temperatures.add(hourlyTemperature.get(o));
+        }
+
+        temperatureChart.getData().clear();
+        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+
+        for (int i = 0; i < temperatures.size(); i++) {
+            String hour = i + ":00";
+            series.getData().add(new XYChart.Data<String, Number>(hour, temperatures.get(i)));
+        }
+        temperatureChart.getData().add(series);
     }
 }
