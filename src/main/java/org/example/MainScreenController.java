@@ -58,9 +58,6 @@ public class MainScreenController {
     private Label apparentTemperatureLabel;
 
     @FXML
-    private Label lbl;
-
-    @FXML
     private TextField searchTextField;
 
     @FXML
@@ -122,8 +119,41 @@ public class MainScreenController {
         searchTextField.setText("");
     }
 
-    public void start() {
-        searchBar();
+    public void refresh() {
+        getLocalization(prepareCityName(forecast[0].getCity()));
+    }
+
+    public void myLocalization() {
+        try {
+            URL url = new URL("http://ip-api.com/json/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                String jsonResponse = response.toString();
+                JsonParser parser = new JsonParser();
+                local = parser.parse(jsonResponse).getAsJsonObject();
+
+                getCords();
+            } else {
+                System.out.println("HTTP request failed with response code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getLocalization(String cityName) {
@@ -144,7 +174,6 @@ public class MainScreenController {
                 reader.close();
 
                 String jsonResponse = response.toString();
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 JsonParser parser = new JsonParser();
                 local = parser.parse(jsonResponse).getAsJsonObject();
 
@@ -168,6 +197,10 @@ public class MainScreenController {
             forecast[0].setLongitude(result.get("longitude").getAsDouble());
 
             getWeather(forecast[0].getLatitude(), forecast[0].getLongitude());
+        } else {
+            forecast[0].setCity(local.get("city").getAsString());
+
+            getLocalization(prepareCityName(forecast[0].getCity()));
         }
     }
 

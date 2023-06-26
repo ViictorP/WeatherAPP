@@ -54,6 +54,7 @@
           <NumberAxis label="Temperature °C" side="LEFT" />
         </yAxis>
       </LineChart>
-      <Label fx:id="lbl" layoutX="524.0" layoutY="458.0" prefHeight="62.0" prefWidth="91.0" />
+      <Button fx:id="myLocalizationLabel" layoutX="98.0" layoutY="274.0" mnemonicParsing="false" onAction="#myLocalization" text="HERE" />
+      <Button fx:id="refreshButton" layoutX="148.0" layoutY="274.0" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
    </children>
 </AnchorPane>
