@@ -123,7 +123,6 @@ public class MainScreenController {
     public void searchBar() {
         String cityName = searchTextField.getText();
         if (cityName != null) {
-            System.out.println(prepareCityName(cityName));
             getLocalization(prepareCityName(cityName));
         }
         searchTextField.setText("");
@@ -204,13 +203,11 @@ public class MainScreenController {
     public void getCords() {
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
-            System.out.println("HELLO");
             forecast[0].setLatitude(result.get("latitude").getAsDouble());
             forecast[0].setLongitude(result.get("longitude").getAsDouble());
 
             getWeather(forecast[0].getLatitude(), forecast[0].getLongitude());
-        } else {
-            System.out.println("Here");
+        } else if (local.has("query")){
             forecast[0].setCity(local.get("city").getAsString());
 
             getLocalization(prepareCityName(forecast[0].getCity()));
@@ -238,7 +235,7 @@ public class MainScreenController {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 JsonParser parser = new JsonParser();
                 weather = parser.parse(jsonResponse).getAsJsonObject();
-                System.out.println("HELLO2");
+
                 extractData();
             } else {
                 System.out.println("HTTP request failed with response code: " + responseCode);
@@ -251,7 +248,6 @@ public class MainScreenController {
     }
 
     public void extractData() {
-        System.out.println("HELLO3");
         // Extraindo informações relacionadas a localização do alvo.
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
