@@ -23,6 +23,8 @@ public class Weather {
 
     private String abbreviatedWeekDay;
 
+    private String countryCode;
+
     private int is_day;
 
     private int weatherCode;
@@ -42,6 +44,14 @@ public class Weather {
     private double maxTemperature;
 
     private double mimTemperature;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
     public int getForecastWeatherCode() {
         return forecastWeatherCode;

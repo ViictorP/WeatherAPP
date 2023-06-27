@@ -14,12 +14,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.currentWeather.Weather;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -88,6 +89,9 @@ public class MainScreenController {
     private ImageView iconImageView;
 
     @FXML
+    private ImageView countryCodeImageView;
+
+    @FXML
     private ScrollPane pane;
 
     @FXML
@@ -111,16 +115,24 @@ public class MainScreenController {
 
     private ArrayList<Double> hourlyWindSpeed = new ArrayList<Double>();
 
+    @FXML
+    public void initialize() {
+        myLocalization();
+    }
+
     public void searchBar() {
         String cityName = searchTextField.getText();
         if (cityName != null) {
+            System.out.println(prepareCityName(cityName));
             getLocalization(prepareCityName(cityName));
         }
         searchTextField.setText("");
     }
 
     public void refresh() {
-        getLocalization(prepareCityName(forecast[0].getCity()));
+        if (forecast[0].getCity() != null) {
+            getLocalization(prepareCityName(forecast[0].getCity()));
+        }
     }
 
     public void myLocalization() {
@@ -192,12 +204,13 @@ public class MainScreenController {
     public void getCords() {
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
-
+            System.out.println("HELLO");
             forecast[0].setLatitude(result.get("latitude").getAsDouble());
             forecast[0].setLongitude(result.get("longitude").getAsDouble());
 
             getWeather(forecast[0].getLatitude(), forecast[0].getLongitude());
         } else {
+            System.out.println("Here");
             forecast[0].setCity(local.get("city").getAsString());
 
             getLocalization(prepareCityName(forecast[0].getCity()));
@@ -225,7 +238,7 @@ public class MainScreenController {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 JsonParser parser = new JsonParser();
                 weather = parser.parse(jsonResponse).getAsJsonObject();
-
+                System.out.println("HELLO2");
                 extractData();
             } else {
                 System.out.println("HTTP request failed with response code: " + responseCode);
@@ -238,14 +251,31 @@ public class MainScreenController {
     }
 
     public void extractData() {
+        System.out.println("HELLO3");
         // Extraindo informações relacionadas a localização do alvo.
         if (local.has("results")) {
             JsonObject result = local.getAsJsonArray("results").get(0).getAsJsonObject();
-
-            forecast[0].setCity(result.get("name").getAsString());
-            forecast[0].setCountry(result.get("country").getAsString());
-            forecast[0].setState(result.get("admin1").getAsString());
-
+            if (result.has("country")) {
+                if (result.has("admin2_id")) {
+                    // Cidade
+                    forecast[0].setCity(result.get("name").getAsString());
+                    forecast[0].setCountry(result.get("country").getAsString());
+                    forecast[0].setState(result.get("admin1").getAsString());
+                    forecast[0].setCountryCode(result.get("country_code").getAsString());
+                } else {
+                    // Pais
+                    forecast[0].setCity(result.get("name").getAsString());
+                    forecast[0].setCountry(result.get("country").getAsString());
+                    forecast[0].setState(result.get("country").getAsString());
+                    forecast[0].setCountryCode(result.get("country_code").getAsString());
+                }
+            } else {
+                // Pais
+                forecast[0].setCity(result.get("name").getAsString());
+                forecast[0].setCountry(result.get("name").getAsString());
+                forecast[0].setState(result.get("admin1").getAsString());
+                forecast[0].setCountryCode(result.get("country_code").getAsString());
+            }
         }
 
         // Extraindo informações relacionadas ao clima do alvo.
@@ -289,6 +319,7 @@ public class MainScreenController {
                 + " " + monthByNumber(forecast[0].getMonth()) + " " + forecast[0].getTime());
         iconImageView.setImage(weatherCodeIcon(forecast[0].getWeatherCode(), forecast[0].getIs_day()));
 
+        countryFlagIcon(forecast[0].getCountryCode());
         chartManager(0, 24);
         sevenDaysForecast();
     }
@@ -680,6 +711,45 @@ public class MainScreenController {
                     Tooltip.install(data.getNode(), new Tooltip(data.getYValue() + "°C"));
                 }
             });
+        }
+    }
+
+    public void countryFlagIcon(String countryCode) {
+        String urlStr = "https://www.countryflagicons.com/FLAT/64/"+ countryCode +".png";
+        String fileName = "bandeira_" + System.currentTimeMillis() + ".png";
+
+        try {
+            URL url = new URL(urlStr);
+            URLConnection connection = url.openConnection();
+
+
+            try (InputStream inputStream = connection.getInputStream()) {
+                // Caminho relativo da pasta resources
+                Path resourcesPath = Path.of("src", "main", "resources", "flagsIcon");
+
+                // Apagar os arquivos antigos da pasta resources
+                Files.list(resourcesPath)
+                        .filter(Files::isRegularFile)
+                        .forEach(file -> {
+                            try {
+                                Files.delete(file);
+                            } catch (IOException e) {
+                                System.out.println("Falha ao excluir o arquivo: " + e.getMessage());
+                            }
+                        });
+
+                // Caminho completo do arquivo a ser salvo
+                Path filePath = resourcesPath.resolve(fileName);
+
+                // Salvar o arquivo na pasta resources
+                Files.copy(inputStream, filePath);
+
+                Image image = new Image(filePath.toUri().toString());
+                countryCodeImageView.setImage(image);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Falha ao obter a bandeira: " + e.getMessage());
         }
     }
 }

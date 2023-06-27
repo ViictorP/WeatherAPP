@@ -46,7 +46,7 @@
          </content>
       </ScrollPane>
       <ImageView fx:id="iconImageView" fitHeight="50.0" fitWidth="50.0" layoutX="170.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
-      <LineChart fx:id="temperatureChart" animated="false" layoutX="307.0" layoutY="194.0" prefHeight="209.0" prefWidth="547.0">
+      <LineChart fx:id="temperatureChart" layoutX="307.0" layoutY="194.0" prefHeight="209.0" prefWidth="547.0">
         <xAxis>
           <CategoryAxis label="Hour" side="BOTTOM" />
         </xAxis>
@@ -56,5 +56,6 @@
       </LineChart>
       <Button fx:id="myLocalizationLabel" layoutX="98.0" layoutY="274.0" mnemonicParsing="false" onAction="#myLocalization" text="HERE" />
       <Button fx:id="refreshButton" layoutX="148.0" layoutY="274.0" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
+      <ImageView fx:id="countryCodeImageView" fitHeight="64.0" fitWidth="64.0" layoutX="465.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
