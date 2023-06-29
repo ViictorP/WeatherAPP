@@ -1,0 +1,87 @@
+#background {
+    -fx-background-color: #0b121e;
+}
+
+#chartPane  {
+    -fx-background-color: #282c3c;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+}
+
+#buttonsPane  {
+    -fx-background-color: #282c3c;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+}
+
+#dayOneButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#dayTwoButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#dayThreeButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#dayFourButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#dayFiveButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#daySixButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+#daySevenButton  {
+    -fx-background-color: Transparent;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+    -fx-border-color: #323c52;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.chart {
+    -fx-legend-visible: false;
+}
+
+.chart-plot-background {
+    -fx-background-color: Transparent;
+}
+
+.chart-series-line {
+    -fx-stroke: #d3ebf0;
+}
+
+.chart-line-symbol {
+    -fx-background-color: Transparent;
+}
+.chart-line-symbol:hover {
+    -fx-background-color: red;
+}

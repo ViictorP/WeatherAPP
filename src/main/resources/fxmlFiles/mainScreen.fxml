@@ -5,57 +5,68 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="530.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainScreenController">
+<AnchorPane fx:id="background" prefHeight="498.0" prefWidth="838.0" stylesheets="@../cssFiles/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainScreenController">
    <children>
-      <TextField fx:id="searchTextField" layoutX="49.0" layoutY="238.0" />
-      <Button fx:id="start" layoutX="220.0" layoutY="238.0" mnemonicParsing="false" onAction="#searchBar" text="Search" />
-      <Label fx:id="countryLabel" layoutX="195.0" layoutY="501.0" prefHeight="17.0" prefWidth="91.0" />
-      <Label fx:id="stateLabel" layoutX="74.0" layoutY="503.0" prefHeight="17.0" prefWidth="91.0" />
-      <Label fx:id="cityLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="99.0" layoutY="19.0" prefHeight="17.0" prefWidth="102.0" />
-      <Label fx:id="currentTemperatureLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="105.0" layoutY="96.0" prefHeight="62.0" prefWidth="91.0">
+      <TextField fx:id="searchTextField" layoutX="10.0" layoutY="14.0" prefHeight="25.0" prefWidth="512.0" promptText="Search for cities" />
+      <Button fx:id="start" layoutX="529.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchBar" prefHeight="25.0" prefWidth="25.0">
+         <graphic>
+            <ImageView fitHeight="17.0" fitWidth="14.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../uiIcons/search.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label fx:id="countryLabel" alignment="CENTER" layoutX="106.0" layoutY="240.0" prefHeight="17.0" prefWidth="91.0" text="Brazil" />
+      <Label fx:id="stateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="34.0" layoutY="223.0" prefHeight="17.0" prefWidth="234.0" text="Bahia" textAlignment="CENTER" />
+      <Label fx:id="cityLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="217.0" layoutY="63.0" prefHeight="17.0" prefWidth="102.0" text="Paripiranga" />
+      <Label fx:id="currentTemperatureLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="223.0" layoutY="116.0" prefHeight="62.0" prefWidth="91.0" text="24°">
          <font>
             <Font size="41.0" />
          </font></Label>
-      <Label fx:id="yearLabel" layoutX="22.0" layoutY="36.0" />
-      <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="45.0" prefHeight="17.0" prefWidth="201.0" textAlignment="CENTER" />
-      <Label fx:id="clockLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="11.0" prefHeight="17.0" prefWidth="44.0" />
-      <Label fx:id="preciptationLabel" layoutX="74.0" layoutY="194.0" prefHeight="17.0" prefWidth="25.0" />
-      <Label fx:id="windSpeedLabel" layoutX="199.0" layoutY="194.0" prefHeight="17.0" prefWidth="52.0" />
-      <Label fx:id="humidityLabel" layoutX="124.0" layoutY="194.0" prefHeight="17.0" prefWidth="50.0" />
-      <Label fx:id="apparentTemperatureLabel" layoutX="32.0" layoutY="194.0" prefHeight="17.0" prefWidth="52.0" />
-      <ScrollPane fx:id="pane" layoutX="50.0" layoutY="377.0" prefHeight="123.0" prefWidth="201.0" vbarPolicy="NEVER" visible="false">
-         <content>
-            <HBox prefHeight="108.0" prefWidth="662.0">
+      <Label fx:id="yearLabel" layoutX="527.0" layoutY="63.0" prefHeight="17.0" prefWidth="34.0" text="2023" />
+      <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="168.0" layoutY="89.0" prefHeight="17.0" prefWidth="201.0" text="Tuesday, 27 June 13:56" textAlignment="CENTER" />
+      <Label fx:id="preciptationLabel" alignment="CENTER" layoutX="217.0" layoutY="204.0" prefHeight="17.0" prefWidth="34.0" text="100%" />
+      <Label fx:id="windSpeedLabel" alignment="CENTER" layoutX="299.0" layoutY="204.0" prefHeight="17.0" prefWidth="52.0" stylesheets="@../cssFiles/style.css" text="14 km/h" />
+      <Label fx:id="humidityLabel" alignment="CENTER" layoutX="258.0" layoutY="204.0" prefHeight="17.0" prefWidth="34.0" text="100%" />
+      <Label fx:id="apparentTemperatureLabel" alignment="CENTER" layoutX="185.0" layoutY="204.0" prefHeight="17.0" prefWidth="23.0" text="26°" />
+      <ImageView fx:id="iconImageView" fitHeight="50.0" fitWidth="50.0" layoutX="310.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="myLocalizationLabel" layoutX="373.0" layoutY="246.0" mnemonicParsing="false" onAction="#myLocalization" text="HERE" />
+      <Button fx:id="refreshButton" layoutX="427.0" layoutY="246.0" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
+      <ImageView fx:id="countryCodeImageView" fitHeight="64.0" fitWidth="64.0" layoutX="427.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
+      <Pane fx:id="buttonsPane" layoutX="570.0" layoutY="14.0" prefHeight="470.0" prefWidth="254.0" stylesheets="@../cssFiles/style.css">
+         <children>
+            <VBox alignment="CENTER" layoutX="6.0" layoutY="7.0" prefHeight="454.0" prefWidth="242.0">
                <children>
-                  <Button fx:id="dayOneButton" mnemonicParsing="false" onAction="#updateLabels" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="dayTwoButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="dayThreeButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="dayFourButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="dayFiveButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="daySixButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
-                  <Button fx:id="daySevenButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="113.0" prefWidth="86.0" />
+                  <Button fx:id="dayOneButton" alignment="CENTER" mnemonicParsing="false" onAction="#updateLabels" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="dayTwoButton" alignment="CENTER" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="dayThreeButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="dayFourButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="dayFiveButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="daySixButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
+                  <Button fx:id="daySevenButton" mnemonicParsing="false" onAction="#selectForecast" prefHeight="65.0" prefWidth="240.0" />
                </children>
-            </HBox>
-         </content>
-      </ScrollPane>
-      <ImageView fx:id="iconImageView" fitHeight="50.0" fitWidth="50.0" layoutX="170.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
-      <LineChart fx:id="temperatureChart" layoutX="307.0" layoutY="194.0" prefHeight="209.0" prefWidth="547.0">
-        <xAxis>
-          <CategoryAxis label="Hour" side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis label="Temperature °C" side="LEFT" />
-        </yAxis>
-      </LineChart>
-      <Button fx:id="myLocalizationLabel" layoutX="98.0" layoutY="274.0" mnemonicParsing="false" onAction="#myLocalization" text="HERE" />
-      <Button fx:id="refreshButton" layoutX="148.0" layoutY="274.0" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
-      <ImageView fx:id="countryCodeImageView" fitHeight="64.0" fitWidth="64.0" layoutX="465.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
+            </VBox>
+         </children>
+      </Pane>
+      <Pane fx:id="chartPane" layoutX="10.0" layoutY="275.0" prefHeight="209.0" prefWidth="547.0">
+         <children>
+            <LineChart fx:id="temperatureChart" prefHeight="209.0" prefWidth="547.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

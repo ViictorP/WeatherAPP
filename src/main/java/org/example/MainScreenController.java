@@ -11,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.currentWeather.Weather;
 
@@ -20,7 +23,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,6 +32,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainScreenController {
+
+    @FXML
+    private AnchorPane background;
 
     @FXML
     private Label countryLabel;
@@ -86,13 +91,16 @@ public class MainScreenController {
     private Button daySevenButton;
 
     @FXML
+    private Pane buttonsPane;
+
+    @FXML
+    private Pane chartPane;
+
+    @FXML
     private ImageView iconImageView;
 
     @FXML
     private ImageView countryCodeImageView;
-
-    @FXML
-    private ScrollPane pane;
 
     @FXML
     private LineChart<String, Number> temperatureChart;
@@ -128,7 +136,7 @@ public class MainScreenController {
         searchTextField.setText("");
     }
 
-    public void refresh() {
+    public void refresh(ActionEvent e) {
         if (forecast[0].getCity() != null) {
             getLocalization(prepareCityName(forecast[0].getCity()));
         }
@@ -262,7 +270,7 @@ public class MainScreenController {
                     // Pais
                     forecast[0].setCity(result.get("name").getAsString());
                     forecast[0].setCountry(result.get("country").getAsString());
-                    forecast[0].setState(result.get("country").getAsString());
+                    forecast[0].setState(result.get("admin1").getAsString());
                     forecast[0].setCountryCode(result.get("country_code").getAsString());
                 }
             } else {
@@ -294,7 +302,6 @@ public class MainScreenController {
     }
 
     public void updateLabels() {
-        pane.setVisible(true);
         // Essa parte configura algumas labels para UTF-8, para evitar problemas no uso de acentos.
         try {
             cityLabel.textProperty().set(new String(forecast[0].getCity().getBytes(), "UTF-8"));
@@ -487,31 +494,36 @@ public class MainScreenController {
         forecastData();
         for (int i = 0; i < 7; i++) {
 
-            VBox vBox = new VBox(5);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(new Label(forecast[i].getAbbreviatedWeekDay()) , new ImageView(weatherCodeIcon(forecast[i].getForecastWeatherCode(), 1)),
-                    new Label((int) Math.round(forecast[i].getMaxTemperature()) + "°C\n" + (int) Math.round(forecast[i].getMimTemperature()) + "°C"));
+            HBox hBox = new HBox(5);
+            hBox.setAlignment(Pos.CENTER);
+            hBox.setSpacing(40);
+            hBox.getChildren().addAll(new Label(forecast[i].getAbbreviatedWeekDay()) , new ImageView(weatherCodeIcon(forecast[i].getForecastWeatherCode(), 1)),
+                    new Label((int) Math.round(forecast[i].getMaxTemperature()) + "°C/" + (int) Math.round(forecast[i].getMimTemperature()) + "°C"));
             switch (i) {
                 case 0:
-                    dayOneButton.setGraphic(vBox);
+                    hBox.getChildren().clear();
+                    hBox.setSpacing(30);
+                    hBox.getChildren().addAll(new Label("Today") , new ImageView(weatherCodeIcon(forecast[i].getForecastWeatherCode(), 1)),
+                            new Label((int) Math.round(forecast[i].getMaxTemperature()) + "°C/" + (int) Math.round(forecast[i].getMimTemperature()) + "°C"));
+                    dayOneButton.setGraphic(hBox);
                     break;
                 case 1:
-                    dayTwoButton.setGraphic(vBox);
+                    dayTwoButton.setGraphic(hBox);
                     break;
                 case 2:
-                    dayThreeButton.setGraphic(vBox);
+                    dayThreeButton.setGraphic(hBox);
                     break;
                 case 3:
-                    dayFourButton.setGraphic(vBox);
+                    dayFourButton.setGraphic(hBox);
                     break;
                 case 4:
-                    dayFiveButton.setGraphic(vBox);
+                    dayFiveButton.setGraphic(hBox);
                     break;
                 case 5:
-                    daySixButton.setGraphic(vBox);
+                    daySixButton.setGraphic(hBox);
                     break;
                 case 6:
-                    daySevenButton.setGraphic(vBox);
+                    daySevenButton.setGraphic(hBox);
                     break;
             }
         }
