@@ -1,5 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Doppio+One&display=swap');
+
+.label {
+    -fx-font-family: 'Doppio One', sans-serif;
+}
+
 #background {
     -fx-background-color: #0b121e;
+}
+
+#searchTextField {
+    -fx-background-color:  #282c3c;
+    -fx-text-fill: white;
+}
+
+#searchButton {
+    -fx-background-color:  #282c3c;
+}
+
+#searchButton:hover {
+    -fx-background-color:  #323c52;
+}
+
+#refreshButton {
+    -fx-background-color:  #282c3c;
+    -fx-text-fill: white;
+}
+
+#refreshButton:hover {
+    -fx-background-color:  #323c52;
+}
+
+#myLocalizationButton {
+    -fx-background-color:  #282c3c;
+    -fx-text-fill: white;
+}
+
+#myLocalizationButton:hover {
+    -fx-background-color:  #323c52;
 }
 
 #chartPane  {
@@ -8,7 +45,19 @@
     -fx-border-radius: 12 12 12 12;
 }
 
+#flagPane  {
+    -fx-background-color: #282c3c;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+}
+
 #buttonsPane  {
+    -fx-background-color: #282c3c;
+    -fx-background-radius: 12 12 12 12;
+    -fx-border-radius: 12 12 12 12;
+}
+
+#InfoPane  {
     -fx-background-color: #282c3c;
     -fx-background-radius: 12 12 12 12;
     -fx-border-radius: 12 12 12 12;
@@ -21,11 +70,19 @@
     -fx-border-color: #323c52;
 }
 
+#dayOneButton:hover {
+    -fx-background-color:  #323c52;
+}
+
 #dayTwoButton  {
     -fx-background-color: Transparent;
     -fx-background-radius: 12 12 12 12;
     -fx-border-radius: 12 12 12 12;
     -fx-border-color: #323c52;
+}
+
+#dayTwoButton:hover {
+    -fx-background-color:  #323c52;
 }
 
 #dayThreeButton  {
@@ -35,11 +92,19 @@
     -fx-border-color: #323c52;
 }
 
+#dayThreeButton:hover {
+    -fx-background-color:  #323c52;
+}
+
 #dayFourButton  {
     -fx-background-color: Transparent;
     -fx-background-radius: 12 12 12 12;
     -fx-border-radius: 12 12 12 12;
     -fx-border-color: #323c52;
+}
+
+#dayFourButton:hover {
+    -fx-background-color:  #323c52;
 }
 
 #dayFiveButton  {
@@ -49,6 +114,10 @@
     -fx-border-color: #323c52;
 }
 
+#dayFiveButton:hover {
+    -fx-background-color:  #323c52;
+}
+
 #daySixButton  {
     -fx-background-color: Transparent;
     -fx-background-radius: 12 12 12 12;
@@ -56,11 +125,19 @@
     -fx-border-color: #323c52;
 }
 
+#daySixButton:hover {
+    -fx-background-color:  #323c52;
+}
+
 #daySevenButton  {
     -fx-background-color: Transparent;
     -fx-background-radius: 12 12 12 12;
     -fx-border-radius: 12 12 12 12;
     -fx-border-color: #323c52;
+}
+
+#daySevenButton:hover {
+    -fx-background-color:  #323c52;
 }
 
 .label {
@@ -83,5 +160,16 @@
     -fx-background-color: Transparent;
 }
 .chart-line-symbol:hover {
-    -fx-background-color: red;
+    -fx-background-color: #202a2e;
+    -fx-border-radius: 50%;
+    -fx-border-color: #dff3fa;
+    -fx-border-width: 2px;
+}
+
+.chart-legend {
+    -fx-text-fill: white;
+}
+
+.axis {
+    -fx-tick-label-fill: #FFFFFF;
 }

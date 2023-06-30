@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.currentWeather.Weather;
 
 import java.io.*;
@@ -70,6 +69,9 @@ public class MainScreenController {
     private Button searchButton;
 
     @FXML
+    private Button myLocalizationButton;
+
+    @FXML
     private Button dayOneButton;
 
     @FXML
@@ -95,6 +97,12 @@ public class MainScreenController {
 
     @FXML
     private Pane chartPane;
+
+    @FXML
+    private Pane InfoPane;
+
+    @FXML
+    private Pane flagPane;
 
     @FXML
     private ImageView iconImageView;
@@ -502,7 +510,7 @@ public class MainScreenController {
             switch (i) {
                 case 0:
                     hBox.getChildren().clear();
-                    hBox.setSpacing(30);
+                    hBox.setSpacing(35);
                     hBox.getChildren().addAll(new Label("Today") , new ImageView(weatherCodeIcon(forecast[i].getForecastWeatherCode(), 1)),
                             new Label((int) Math.round(forecast[i].getMaxTemperature()) + "°C/" + (int) Math.round(forecast[i].getMimTemperature()) + "°C"));
                     dayOneButton.setGraphic(hBox);
