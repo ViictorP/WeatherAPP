@@ -33,9 +33,6 @@ import java.util.Locale;
 public class MainScreenController {
 
     @FXML
-    private AnchorPane background;
-
-    @FXML
     private Label countryLabel;
 
     @FXML
@@ -61,9 +58,6 @@ public class MainScreenController {
 
     @FXML
     private Label apparentTemperatureLabel;
-
-    @FXML
-    private TextField searchTextField;
 
     @FXML
     private Button searchButton;
@@ -93,6 +87,18 @@ public class MainScreenController {
     private Button daySevenButton;
 
     @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private LineChart<String, Number> temperatureChart;
+
+    @FXML
+    private ImageView iconImageView;
+
+    @FXML
+    private ImageView countryCodeImageView;
+
+    @FXML
     private Pane buttonsPane;
 
     @FXML
@@ -105,13 +111,7 @@ public class MainScreenController {
     private Pane flagPane;
 
     @FXML
-    private ImageView iconImageView;
-
-    @FXML
-    private ImageView countryCodeImageView;
-
-    @FXML
-    private LineChart<String, Number> temperatureChart;
+    private AnchorPane background;
 
     private JsonObject local;
 
@@ -137,6 +137,8 @@ public class MainScreenController {
     }
 
     public void searchBar() {
+        /* Primeiro o método recolhe o que foi escrito no textField, verifica se algo foi escrito
+        * e envia o nome da cidade para o método getLocalization. Em seguida o textField é limpo.*/
         String cityName = searchTextField.getText();
         if (cityName != null) {
             getLocalization(prepareCityName(cityName));
@@ -145,12 +147,17 @@ public class MainScreenController {
     }
 
     public void refresh(ActionEvent e) {
+        /* O método refresh apenas envia novamente o nome da cidade para o método getLocalization,
+        * para que as informações da interface possam ser atualizadas. */
         if (forecast[0].getCity() != null) {
             getLocalization(prepareCityName(forecast[0].getCity()));
         }
     }
 
     public void myLocalization() {
+        /* O método myLocalization manda um request para uma api que retorna informações da maquina
+        *  que está executando o programa, informações como ip e coordenadas, que são utilizadas no método
+        * getCords. */
         try {
             URL url = new URL("http://ip-api.com/json/");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

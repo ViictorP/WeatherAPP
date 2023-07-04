@@ -107,7 +107,7 @@
       <Pane fx:id="flagPane" layoutX="10.0" layoutY="49.0" prefHeight="144.0" prefWidth="176.0">
          <children>
             <ImageView fx:id="countryCodeImageView" fitHeight="64.0" fitWidth="64.0" layoutX="55.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="countryLabel" alignment="CENTER" layoutX="42.0" layoutY="113.0" prefHeight="17.0" prefWidth="91.0" text="Brazil" />
+            <Label fx:id="countryLabel" alignment="CENTER" layoutX="16.0" layoutY="113.0" prefHeight="17.0" prefWidth="142.0" text="Brazil" />
             <Label fx:id="stateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-30.0" layoutY="96.0" prefHeight="17.0" prefWidth="234.0" text="Bahia" textAlignment="CENTER" />
          </children>
       </Pane>
