@@ -1,6 +1,6 @@
 # WeatherAPP
 
-
+![interface](interface_weatherAPP.png)
 
 ## Bibliotecas utilizadas
 
