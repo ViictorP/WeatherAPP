@@ -2,6 +2,14 @@
 
 ![interface](interface_weatherAPP.png)
 
+## APIs utilizadas
+
+- Weather Forecast API: - [https://open-meteo.com/](https://open-meteo.com/en/docs)
+- Geocoding API: - [https://open-meteo.com/](https://open-meteo.com/en/docs)
+- IP-API: [https://ip-api.com/](https://ip-api.com/)
+- Country Flag Icons: [https://countryflagicons.com/](www.countryflagicons.com)
+
+
 ## Bibliotecas utilizadas
 
 - JavaFX: [https://openjfx.io/](https://openjfx.io/)
